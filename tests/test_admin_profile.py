@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.fixed_navigation_bar.menu.editing.add_product_page import AddProductPage
 from pages.fixed_navigation_bar.menu.editing.edit_product_details_page import EditProductDetailsPage
@@ -12,10 +10,9 @@ from utils.config import ProductData
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["admin"], indirect=True)
-def test_admin_1(authorization):
+def test_admin_1(admin_auth):
+    driver = admin_auth
     logging.info("Вход в роли администратора")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -58,10 +55,9 @@ def test_admin_1(authorization):
     Double.print_and_log(f"Созданный товар \"{name}\" находится на странице с продуктами.")
 
 
-@pytest.mark.parametrize("authorization", ["admin"], indirect=True)
-def test_admin_2(authorization):
+def test_admin_2(admin_auth):
+    driver = admin_auth
     logging.info("Вход в роли администратора")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -94,10 +90,9 @@ def test_admin_2(authorization):
     Double.print_and_log("Кнопка \"Создать товар\" не активна.")
 
 
-@pytest.mark.parametrize("authorization", ["admin"], indirect=True)
-def test_admin_3(authorization):
+def test_admin_3(admin_auth):
+    driver = admin_auth
     logging.info("Вход в роли администратора")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -132,10 +127,9 @@ def test_admin_3(authorization):
     Double.print_and_log("Цена тестового продукта изменилась на сохраненную ранее.")
 
 
-@pytest.mark.parametrize("authorization", ["admin"], indirect=True)
-def test_admin_4(authorization):
+def test_admin_4(admin_auth):
+    driver = admin_auth
     logging.info("Вход в роли администратора")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -161,10 +155,9 @@ def test_admin_4(authorization):
     Double.print_and_log("Кнопка \"Обновить товар\" не активна.")
 
 
-@pytest.mark.parametrize("authorization", ["admin"], indirect=True)
-def test_admin_5(authorization):
+def test_admin_5(admin_auth):
+    driver = admin_auth
     logging.info("Вход в роли администратора")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)

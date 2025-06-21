@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.authorization_page import AuthorizationPage
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.fixed_navigation_bar.menu.menu import Menu
@@ -10,10 +8,9 @@ from pages.shopping_cart_page import ShoppingCartPage
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_menu_1(authorization):
+def test_menu_1(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -33,10 +30,9 @@ def test_menu_1(authorization):
     Double.print_and_log("Пункты: \"Магазин\", \"Корзинка\", \"Выход\" присутствуют в меню.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_menu_2(authorization):
+def test_menu_2(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -55,10 +51,9 @@ def test_menu_2(authorization):
     Double.print_and_log("Выполнен корректный переход на страницу \"Продукты\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_menu_3(authorization):
+def test_menu_3(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -77,10 +72,9 @@ def test_menu_3(authorization):
     Double.print_and_log("Выполнен корректный переход на страницу \"Корзинка\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_menu_4(authorization):
+def test_menu_4(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)

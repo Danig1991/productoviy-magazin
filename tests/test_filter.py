@@ -1,15 +1,12 @@
 import logging
 
-import pytest
-
 from pages.products_page import ProductsPage
 from utils.config import FilterConfig
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_1(authorization):
-    driver = authorization
+def test_filter_1(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -26,9 +23,8 @@ def test_filter_1(authorization):
     Double.print_and_log("Товар отображается по цене от меньшей к большей.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_2(authorization):
-    driver = authorization
+def test_filter_2(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -45,9 +41,8 @@ def test_filter_2(authorization):
     Double.print_and_log("Товар отображается по цене от большей к меньшей.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_3(authorization):
-    driver = authorization
+def test_filter_3(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -64,9 +59,8 @@ def test_filter_3(authorization):
     Double.print_and_log("Товар отображается в алфавитном порядке.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_4(authorization):
-    driver = authorization
+def test_filter_4(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -84,9 +78,8 @@ def test_filter_4(authorization):
     Double.print_and_log("Товар отображается по алфавиту в обратном порядке.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_5(authorization):
-    driver = authorization
+def test_filter_5(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -112,9 +105,8 @@ def test_filter_5(authorization):
     Double.print_and_log("Продукты соответствуют категории \"Бургер\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_6(authorization):
-    driver = authorization
+def test_filter_6(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -140,9 +132,8 @@ def test_filter_6(authorization):
     Double.print_and_log("Продукты соответствуют категории \"Сэндвич\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_7(authorization):
-    driver = authorization
+def test_filter_7(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -168,9 +159,8 @@ def test_filter_7(authorization):
     Double.print_and_log("Ни один товар не отображается.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_filter_8(authorization):
-    driver = authorization
+def test_filter_8(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)

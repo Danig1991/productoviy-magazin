@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.shopping_cart_page import ShoppingCartPage
 from pages.user_data_page import UserDataPage
@@ -9,10 +7,9 @@ from utils.config import ProductConfig
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_1(authorization):
+def test_cart_1(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     fixed_panel_icons = FixedPanelIcons(driver)
     shopping_cart_page = ShoppingCartPage(driver)
@@ -29,10 +26,9 @@ def test_cart_1(authorization):
     Double.print_and_log("Выполнен переход на страницу \"Корзинка\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_2(authorization, add_two_products, go_to_cart):
+def test_cart_2(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
     product_name = ProductConfig.PRODUCT_NAME
@@ -48,10 +44,9 @@ def test_cart_2(authorization, add_two_products, go_to_cart):
     Double.print_and_log("Отображается сообщение: \"в корзине пока пусто\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_3(authorization, add_two_products, go_to_cart):
+def test_cart_3(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
 
@@ -61,10 +56,9 @@ def test_cart_3(authorization, add_two_products, go_to_cart):
     Double.print_and_log("Кнопка \"Оформить заказ\" доступна.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_4(authorization, add_two_products, go_to_cart):
+def test_cart_4(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
     product_name = ProductConfig.PRODUCT_NAME
@@ -79,10 +73,9 @@ def test_cart_4(authorization, add_two_products, go_to_cart):
     Double.print_and_log("Количество добавленных продуктов в корзине отображается корректно.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_5(authorization, add_two_products, go_to_cart):
+def test_cart_5(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
     product_name = ProductConfig.PRODUCT_NAME
@@ -99,10 +92,9 @@ def test_cart_5(authorization, add_two_products, go_to_cart):
     Double.print_and_log("Итоговая сумма отображается корректно.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_cart_6(authorization, add_two_products, go_to_cart):
+def test_cart_6(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
     user_data_page = UserDataPage(driver)

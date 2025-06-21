@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.products_page import ProductsPage
 from pages.shopping_cart_page import ShoppingCartPage
@@ -9,9 +7,8 @@ from utils.config import ProductConfig
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_max_1(authorization):
-    driver = authorization
+def test_max_1(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
@@ -32,9 +29,8 @@ def test_max_1(authorization):
     Double.print_and_log("Добавлено не более 100 единиц одного наименования продукта.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_max_2(authorization):
-    driver = authorization
+def test_max_2(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)

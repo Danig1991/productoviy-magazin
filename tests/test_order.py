@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.checkout_complete_page import CheckoutCompletePage
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.order_confirmation_page import OrderConfirmationPage
@@ -12,10 +10,9 @@ from utils.config import UserData, ProductConfig
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_order_1(authorization, add_two_products, go_to_cart):
+def test_order_1(shopper_auth, add_two_products, go_to_cart):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, переход в корзину")
-    driver = authorization
 
     shopping_cart_page = ShoppingCartPage(driver)
     user_data_page = UserDataPage(driver)
@@ -64,10 +61,9 @@ def test_order_1(authorization, add_two_products, go_to_cart):
     Double.print_and_log("Итоговая сумма и данные для подтверждения заказа передаются корректно.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_order_2(authorization):
+def test_order_2(shopper_auth):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя")
-    driver = authorization
 
     products_page = ProductsPage(driver)
     fixed_panel_icons = FixedPanelIcons(driver)

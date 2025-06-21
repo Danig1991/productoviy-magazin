@@ -1,7 +1,5 @@
 import logging
 
-import pytest
-
 from pages.order_confirmation_page import OrderConfirmationPage
 from pages.products_page import ProductsPage
 from pages.user_data_page import UserDataPage
@@ -9,11 +7,10 @@ from utils.config import UserData
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_us_data_1(authorization, add_two_products, go_to_cart, go_to_checkout_user_data):
+def test_us_data_1(shopper_auth, add_two_products, go_to_cart, go_to_checkout_user_data):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, "
                  "переход в корзину, переход для ввода данных пользователя")
-    driver = authorization
 
     user_data_page = UserDataPage(driver)
     products_page = ProductsPage(driver)
@@ -28,11 +25,10 @@ def test_us_data_1(authorization, add_two_products, go_to_cart, go_to_checkout_u
     Double.print_and_log("Выполнен корректный переход на страницу \"Продукты\".")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_us_data_2(authorization, add_two_products, go_to_cart, go_to_checkout_user_data):
+def test_us_data_2(shopper_auth, add_two_products, go_to_cart, go_to_checkout_user_data):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, "
                  "переход в корзину, переход для ввода данных пользователя")
-    driver = authorization
 
     user_data_page = UserDataPage(driver)
     order_confirmation_page = OrderConfirmationPage(driver)
@@ -63,11 +59,10 @@ def test_us_data_2(authorization, add_two_products, go_to_cart, go_to_checkout_u
     Double.print_and_log("Корректный переход на страницу для подтверждения заказа.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_us_data_3(authorization, add_two_products, go_to_cart, go_to_checkout_user_data):
+def test_us_data_3(shopper_auth, add_two_products, go_to_cart, go_to_checkout_user_data):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, "
                  "переход в корзину, переход для ввода данных пользователя")
-    driver = authorization
 
     user_data_page = UserDataPage(driver)
 
@@ -83,11 +78,10 @@ def test_us_data_3(authorization, add_two_products, go_to_cart, go_to_checkout_u
     Double.print_and_log("Присутствует сообщение об ошибке, так как поля для заполнения оставлены пустыми.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_us_data_4(authorization, add_two_products, go_to_cart, go_to_checkout_user_data):
+def test_us_data_4(shopper_auth, add_two_products, go_to_cart, go_to_checkout_user_data):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, "
                  "переход в корзину, переход для ввода данных пользователя")
-    driver = authorization
 
     user_data_page = UserDataPage(driver)
     user_data = UserData()
@@ -120,11 +114,10 @@ def test_us_data_4(authorization, add_two_products, go_to_cart, go_to_checkout_u
                          f"так как поле \"Номер карты\" оставлено пустым.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_us_data_5(authorization, add_two_products, go_to_cart, go_to_checkout_user_data):
+def test_us_data_5(shopper_auth, add_two_products, go_to_cart, go_to_checkout_user_data):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта, "
                  "переход в корзину, переход для ввода данных пользователя")
-    driver = authorization
 
     user_data_page = UserDataPage(driver)
     user_data = UserData()

@@ -37,7 +37,7 @@ class ShoppingCartPage(Expectation):
 
         for _ in range(clicks):
             selected_button.click()
-            time.sleep(0.1)
+            time.sleep(0.15)
 
     # уменьшить количество товара на указанное значение
     def decrease_product_quantity(self, product_name, decrease_by):

@@ -1,16 +1,13 @@
 import logging
 
-import pytest
-
 from pages.products_page import ProductsPage
 from utils.config import ProductConfig
 from utils.double import Double
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_prod_act_1(authorization, add_two_products):
+def test_prod_act_1(shopper_auth, add_two_products):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта")
-    driver = authorization
 
     products_page = ProductsPage(driver)
     product_name = ProductConfig.PRODUCT_NAME
@@ -25,10 +22,9 @@ def test_prod_act_1(authorization, add_two_products):
     Double.print_and_log("Отображение количества товара происходит корректно.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_prod_act_2(authorization, add_two_products):
+def test_prod_act_2(shopper_auth, add_two_products):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта")
-    driver = authorization
 
     products_page = ProductsPage(driver)
     product_name = ProductConfig.PRODUCT_NAME
@@ -46,10 +42,9 @@ def test_prod_act_2(authorization, add_two_products):
     Double.print_and_log("Уменьшение количества товара происходит корректно.")
 
 
-@pytest.mark.parametrize("authorization", ["shopper"], indirect=True)
-def test_prod_act_3(authorization, add_two_products):
+def test_prod_act_3(shopper_auth, add_two_products):
+    driver = shopper_auth
     logging.info("Вход в роли пользователя, добавлено 2 продукта")
-    driver = authorization
 
     products_page = ProductsPage(driver)
     product_name = ProductConfig.PRODUCT_NAME

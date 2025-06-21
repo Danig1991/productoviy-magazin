@@ -149,7 +149,7 @@ class ProductsPage(Expectation):
 
         for _ in range(clicks):
             selected_button.click()
-            time.sleep(0.1)
+            time.sleep(0.15)
 
     # установить количество продукта
     def set_product_quantity(self, product_name, target_quantity):

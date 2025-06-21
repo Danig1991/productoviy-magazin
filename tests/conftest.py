@@ -11,32 +11,10 @@ from pages.shopping_cart_page import ShoppingCartPage
 from utils.browser import Browser
 from utils.config import AuthConfig, Url, ProductConfig
 
-# роли для авторизации
-roles = {
-    "admin": {
-        "login": AuthConfig.ADMIN_LOGIN,
-        "password": AuthConfig.ADMIN_PASSWORD,
-        "text_authorization": "\nАвторизация на сайте администратором."
-    },
-    "shopper": {
-        "login": AuthConfig.SHOPPER_LOGIN,
-        "password": AuthConfig.SHOPPER_PASSWORD,
-        "text_authorization": "\nАвторизация на сайте покупателем."
-    },
-    "none": {
-        "login": None,
-        "password": None,
-        "text_authorization": "\nПустые обязательные поля авторизации."
-    }
-}
 
-
-# фикстура для авторизации
-@pytest.fixture(scope="function")
-def authorization(request):
-    # получить роль
-    role = request.param
-    print(roles[role]["text_authorization"])
+# конфигурация авторизации
+def conf_authorization(login: str = None, password: str = None, text_authorization: str = None):
+    print(text_authorization)
 
     # инициализация браузера
     browser = Browser(browser_type="chrome")
@@ -45,21 +23,57 @@ def authorization(request):
 
     # заполнение формы авторизации
     authorization_page = AuthorizationPage(driver)
-    authorization_page.enter_login(roles[role]["login"])
-    authorization_page.enter_password(roles[role]["password"])
+    authorization_page.enter_login(login)
+    authorization_page.enter_password(password)
     authorization_page.click_the_login_button()
 
+    return browser, driver
+
+
+# авторизация администратором
+@pytest.fixture
+def admin_auth():
+    browser, driver = conf_authorization(
+        AuthConfig.ADMIN_LOGIN,
+        AuthConfig.ADMIN_PASSWORD,
+        "\nАвторизация администратором"
+    )
     # передача драйвера
     yield driver
+    # закрытие браузера
+    browser.quit()
 
+
+# авторизация покупателем
+@pytest.fixture
+def shopper_auth():
+    browser, driver = conf_authorization(
+        AuthConfig.SHOPPER_LOGIN,
+        AuthConfig.SHOPPER_PASSWORD,
+        "\nАвторизация покупателем."
+    )
+    # передача драйвера
+    yield driver
+    # закрытие браузера
+    browser.quit()
+
+
+# без авторизации
+@pytest.fixture(scope="function")
+def none_auth():
+    browser, driver = conf_authorization(
+        text_authorization="\nАвторизация отсутствует."
+    )
+    # передача драйвера
+    yield driver
     # закрытие браузера
     browser.quit()
 
 
 # добавление продукта в количестве 2 шт.
 @pytest.fixture(scope="function")
-def add_two_products(authorization):
-    driver = authorization
+def add_two_products(shopper_auth):
+    driver = shopper_auth
 
     ProductsPage(driver).set_product_quantity(
         product_name=ProductConfig.PRODUCT_NAME,
@@ -69,16 +83,16 @@ def add_two_products(authorization):
 
 # перейти в корзину
 @pytest.fixture(scope="function")
-def go_to_cart(authorization):
-    driver = authorization
+def go_to_cart(shopper_auth):
+    driver = shopper_auth
 
     FixedPanelIcons(driver).click_shopping_cart()
 
 
 # перейти на страницу "Оформление заказа: Данные пользователя"
 @pytest.fixture(scope="function")
-def go_to_checkout_user_data(authorization):
-    driver = authorization
+def go_to_checkout_user_data(shopper_auth):
+    driver = shopper_auth
 
     ShoppingCartPage(driver).click_button_place_order()
 
