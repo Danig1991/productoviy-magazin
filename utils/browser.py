@@ -8,6 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
+from utils.double import Double
+
 
 class Browser:
 
@@ -53,9 +55,9 @@ class Browser:
     def open(self, url):
         self.driver.get(url)
         self.driver.maximize_window()
-        print(f"Браузер {self.browser_type} открыт.")
+        Double.print_and_log(f"Браузер {self.browser_type} открыт.")
 
     # закрыть браузер
     def quit(self):
         self.driver.quit()
-        print(f"Браузер {self.browser_type} закрыт.")
+        Double.print_and_log(f"Браузер {self.browser_type} закрыт.")
