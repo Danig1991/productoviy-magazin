@@ -1,19 +1,22 @@
 import logging
 
+import allure
+
 from pages.products_page import ProductsPage
 from utils.config import FilterConfig
 from utils.double import Double
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара через выпадающий список по цене (сначала подешевле).")
 def test_filter_1(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     sort_by_price_low_to_high = FilterConfig.SORT_BY_PRICE_LOW_TO_HIGH
 
     logging.info("На странице с продуктами найти и нажать выпадающий список.")
-    logging.info("В выпадающем списке выбрать значение: \"Цена: Сначала подешевле\".")
+    logging.info("В выпадающем списке выбрать значение: 'Цена: Сначала подешевле'.")
     products_page.select_dropdown_option(sort_by_price_low_to_high)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
@@ -23,15 +26,16 @@ def test_filter_1(shopper_auth):
     Double.print_and_log("Товар отображается по цене от меньшей к большей.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара через выпадающий список по цене (сначала подороже).")
 def test_filter_2(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     sort_by_price_high_to_low = FilterConfig.SORT_BY_PRICE_HIGH_TO_LOW
 
     logging.info("На странице с продуктами найти и нажать выпадающий список.")
-    logging.info("В выпадающем списке выбрать значение: \"Цена: Сначала подороже\".")
+    logging.info("В выпадающем списке выбрать значение: 'Цена: Сначала подороже'.")
     products_page.select_dropdown_option(sort_by_price_high_to_low)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
@@ -41,15 +45,16 @@ def test_filter_2(shopper_auth):
     Double.print_and_log("Товар отображается по цене от большей к меньшей.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара через выпадающий список по наименованию (от А до Я).")
 def test_filter_3(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     sort_by_name_a_to_z = FilterConfig.SORT_BY_NAME_A_TO_Z
 
     logging.info("На странице с продуктами найти и нажать выпадающий список.")
-    logging.info("В выпадающем списке выбрать значение: \"Наименование: от А до Я\".")
+    logging.info("В выпадающем списке выбрать значение: 'Наименование: от А до Я'.")
     products_page.select_dropdown_option(sort_by_name_a_to_z)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
@@ -59,15 +64,16 @@ def test_filter_3(shopper_auth):
     Double.print_and_log("Товар отображается в алфавитном порядке.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара через выпадающий список по наименованию (от Я до А).")
 def test_filter_4(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     sort_by_name_z_to_a = FilterConfig.SORT_BY_NAME_Z_TO_A
 
     logging.info("На странице с продуктами найти и нажать выпадающий список.")
-    logging.info("В выпадающем списке выбрать значение: \"Наименование: от Я до А\".")
+    logging.info("В выпадающем списке выбрать значение: 'Наименование: от Я до А'.")
     products_page.select_dropdown_option(sort_by_name_z_to_a)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
@@ -78,9 +84,10 @@ def test_filter_4(shopper_auth):
     Double.print_and_log("Товар отображается по алфавиту в обратном порядке.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара при помощи фильтра (категория 'Бургер').")
 def test_filter_5(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     burger = FilterConfig.BURGER
@@ -89,7 +96,7 @@ def test_filter_5(shopper_auth):
     roll = FilterConfig.ROLL
 
     logging.info("На странице с продуктами найти и нажать кнопку фильтра (иконка с ползунками).")
-    logging.info("В блоке \"Категории\" оставить активным чек-бокс \"Бургер\".")
+    logging.info("В блоке 'Категории' оставить активным чек-бокс 'Бургер'.")
     products_page.click_filter_menu()
     products_page.checkbox_activation(value=burger, activate=True)
     products_page.checkbox_activation(value=sandwich, activate=False)
@@ -101,13 +108,14 @@ def test_filter_5(shopper_auth):
     product_names = ProductsPage(driver).get_list_of_product_names()
     for name in product_names:
         assert "Бургер" in name, \
-            f"Ошибка: Продукт: \"{name}\" - не соответствует категории \"Бургер\"!"
-    Double.print_and_log("Продукты соответствуют категории \"Бургер\".")
+            f"Ошибка: Продукт: '{name}' - не соответствует категории 'Бургер'!"
+    Double.print_and_log("Продукты соответствуют категории 'Бургер'.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара при помощи фильтра (категория 'Сэндвич').")
 def test_filter_6(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     burger = FilterConfig.BURGER
@@ -116,7 +124,7 @@ def test_filter_6(shopper_auth):
     roll = FilterConfig.ROLL
 
     logging.info("На странице с продуктами найти и нажать кнопку фильтра (иконка с ползунками).")
-    logging.info("В блоке \"Категории\" оставить активным чек-бокс \"Сэндвич\".")
+    logging.info("В блоке 'Категории' оставить активным чек-бокс 'Сэндвич'.")
     products_page.click_filter_menu()
     products_page.checkbox_activation(value=sandwich, activate=True)
     products_page.checkbox_activation(value=burger, activate=False)
@@ -128,13 +136,14 @@ def test_filter_6(shopper_auth):
     product_names = ProductsPage(driver).get_list_of_product_names()
     for name in product_names:
         assert "Сэндвич" in name, \
-            f"Ошибка: Продукт: \"{name}\" - не соответствует категории \"Сэндвич\"!"
-    Double.print_and_log("Продукты соответствуют категории \"Сэндвич\".")
+            f"Ошибка: Продукт: '{name}' - не соответствует категории 'Сэндвич'!"
+    Double.print_and_log("Продукты соответствуют категории 'Сэндвич'.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара при помощи фильтра (категория не выбрана).")
 def test_filter_7(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     burger = FilterConfig.BURGER
@@ -143,7 +152,7 @@ def test_filter_7(shopper_auth):
     roll = FilterConfig.ROLL
 
     logging.info("На странице с продуктами найти и нажать кнопку фильтра (иконка с ползунками).")
-    logging.info("В блоке \"Категории\" не активен ни один чек-бокс.")
+    logging.info("В блоке 'Категории' не активен ни один чек-бокс.")
     products_page.click_filter_menu()
     products_page.checkbox_activation(value=sandwich, activate=False)
     products_page.checkbox_activation(value=burger, activate=False)
@@ -159,16 +168,17 @@ def test_filter_7(shopper_auth):
     Double.print_and_log("Ни один товар не отображается.")
 
 
+@allure.epic("Тест фильтров.")
+@allure.title("Сортировка товара при помощи фильтра (диапазон цены: 'от' - 100, 'до' - 150).")
 def test_filter_8(shopper_auth):
     driver = shopper_auth
-    logging.info("Вход в роли пользователя")
 
     products_page = ProductsPage(driver)
     min_price = FilterConfig.MIN_PRICE
     max_price = FilterConfig.MAX_PRICE
 
     logging.info("На странице с продуктами найти и нажать кнопку фильтра (иконка с ползунками).")
-    logging.info("В блоке \"Цена\" ввести данные: в поле \"от\" - 100, в поле \"до\" - 150.")
+    logging.info("В блоке 'Цена' ввести данные: в поле 'от' - 100, в поле 'до' - 150.")
     products_page.click_filter_menu()
     products_page.set_price_filter_range(min_price, max_price)
     products_page.click_filter_menu()

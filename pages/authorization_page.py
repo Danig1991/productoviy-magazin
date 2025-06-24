@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 
 from utils.expectation import Expectation
@@ -10,7 +11,7 @@ TITLE_AUTHORIZATION_LOCATOR = (By.CSS_SELECTOR, ".fs-2")
 
 class AuthorizationPage(Expectation):
 
-    # ввод логина
+    @allure.step("Ввод логина.")
     def enter_login(self, login=None):
         if not login:
             print("Логин не введен!")
@@ -18,7 +19,7 @@ class AuthorizationPage(Expectation):
             self.visibility_of_element_located(LOGIN_LOCATOR, "Логин").send_keys(login)
             print(f"Введен логин: {login}")
 
-    # ввод пароля
+    @allure.step("Ввод пароля")
     def enter_password(self, password=None):
         if not password:
             print("Пароль не введен!")
@@ -26,11 +27,11 @@ class AuthorizationPage(Expectation):
             self.visibility_of_element_located(PASSWORD_LOCATOR, "Пароль").send_keys(password)
             print(f"Введен пароль: {password}")
 
-    # нажать кнопку "Войти"
+    @allure.step("Нажать кнопку 'Войти'")
     def click_the_login_button(self):
         self.visibility_of_element_located(LOGIN_BUTTON_LOCATOR, "Войти").click()
-        print("Нажата кнопка \"Ввод\".")
+        print("Нажата кнопка 'Ввод'.")
 
-    # заголовок "Авторизация"
+    @allure.step("Получить заголовок 'Авторизация'")
     def title_authorization(self):
         return self.visibility_of_element_located(TITLE_AUTHORIZATION_LOCATOR, "Авторизация").text

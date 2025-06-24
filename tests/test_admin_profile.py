@@ -1,5 +1,7 @@
 import logging
 
+import allure
+
 from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.fixed_navigation_bar.menu.editing.add_product_page import AddProductPage
 from pages.fixed_navigation_bar.menu.editing.edit_product_details_page import EditProductDetailsPage
@@ -10,9 +12,10 @@ from utils.config import ProductData
 from utils.double import Double
 
 
+@allure.epic("Тест профиля администратора")
+@allure.title("Добавление нового товара в ассортимент.")
 def test_admin_1(admin_auth):
     driver = admin_auth
-    logging.info("Вход в роли администратора")
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -25,13 +28,13 @@ def test_admin_1(admin_auth):
     price = ProductData.PRICE
     image_url = ProductData.IMAGE_URL
 
-    logging.info("Нажать на кнопку \"Меню\".")
+    logging.info("Нажать на кнопку 'Меню'.")
     fixed_panel_icons.open_menu()
 
-    logging.info("Найти и нажать на пункт \"Редактировать товары\".")
+    logging.info("Найти и нажать на пункт 'Редактировать товары'.")
     menu.click_edit_products_in_menu()
 
-    logging.info("Найти и нажать на кнопку \"Добавить товар\".")
+    logging.info("Найти и нажать на кнопку 'Добавить товар'.")
     edit_products_page.click_add_product_button()
 
     logging.info("Заполнить обязательные поля необходимыми данными.")
@@ -41,23 +44,24 @@ def test_admin_1(admin_auth):
     add_product_page.add_price(price)
     add_product_page.add_image_url(image_url)
 
-    logging.info("Нажать на кнопку \"Создать товар\".")
+    logging.info("Нажать на кнопку 'Создать товар'.")
     add_product_page.click_button_create_product()
 
-    logging.info("Во вкладке \"Меню\" найти и нажать на пункт \"Магазин\".")
+    logging.info("Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.")
     fixed_panel_icons.open_menu()
     menu.click_shop_in_menu()
 
     logging.info("Убедиться, что товар создан и находится в списке продуктов.")
     name_test_product = products_page.get_name_test_product()
     assert name_test_product == name, \
-        f"Ошибка: Продукт \"{name}\" на странице не найден!"
-    Double.print_and_log(f"Созданный товар \"{name}\" находится на странице с продуктами.")
+        f"Ошибка: Продукт '{name}' на странице не найден!"
+    Double.print_and_log(f"Созданный товар '{name}' находится на странице с продуктами.")
 
 
+@allure.epic("Тест профиля администратора")
+@allure.title("Проверка добавления нового товара, оставить незаполненным обязательное поле.")
 def test_admin_2(admin_auth):
     driver = admin_auth
-    logging.info("Вход в роли администратора")
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -68,13 +72,13 @@ def test_admin_2(admin_auth):
     category = ProductData.CATEGORY
     price = ProductData.PRICE
 
-    logging.info("Нажать на кнопку \"Меню\".")
+    logging.info("Нажать на кнопку 'Меню'.")
     fixed_panel_icons.open_menu()
 
-    logging.info("Найти и нажать на пункт \"Редактировать товары\".")
+    logging.info("Найти и нажать на пункт 'Редактировать товары'.")
     menu.click_edit_products_in_menu()
 
-    logging.info("Найти и нажать на кнопку \"Добавить товар\".")
+    logging.info("Найти и нажать на кнопку 'Добавить товар'.")
     edit_products_page.click_add_product_button()
 
     logging.info("Оставить одно обязательное поле незаполненным.")
@@ -83,16 +87,17 @@ def test_admin_2(admin_auth):
     add_product_page.add_category(category)
     add_product_page.add_price(price)
 
-    logging.info("Убедиться, что кнопка \"Создать товар\" не активна.")
+    logging.info("Убедиться, что кнопка 'Создать товар' не активна.")
     button_create_product = add_product_page.button_create_product()
     assert not button_create_product.is_enabled(), \
         "Ошибка: Кнопка не должна быть активной!"
     Double.print_and_log("Кнопка \"Создать товар\" не активна.")
 
 
+@allure.epic("Тест профиля администратора")
+@allure.title("Редактирование имеющегося товара.")
 def test_admin_3(admin_auth):
     driver = admin_auth
-    logging.info("Вход в роли администратора")
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
@@ -101,79 +106,81 @@ def test_admin_3(admin_auth):
     products_page = ProductsPage(driver)
     new_price = ProductData.NEW_PRICE
 
-    logging.info("Нажать на кнопку \"Меню\".")
+    logging.info("Нажать на кнопку 'Меню'.")
     fixed_panel_icons.open_menu()
 
-    logging.info("Найти и нажать на пункт \"Редактировать товары\".")
+    logging.info("Найти и нажать на пункт 'Редактировать товары'.")
     menu.click_edit_products_in_menu()
 
     logging.info("Найти добавленный ранее товар и нажать на кнопку редактирования (иконка карандаша).")
     edit_products_page.click_edit_product_button()
 
-    logging.info("Редактировать поле \"Цена, Р\", указать новое значение.")
+    logging.info("Редактировать поле 'Цена, Р', указать новое значение.")
     edit_product_details_page.new_price(new_price)
 
-    logging.info("Найти и нажать на кнопку \"Обновить товар\".")
+    logging.info("Найти и нажать на кнопку 'Обновить товар'.")
     edit_product_details_page.click_button_update_product()
 
-    logging.info("Во вкладке \"Меню\" найти и нажать на пункт \"Магазин\".")
+    logging.info("Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.")
     fixed_panel_icons.open_menu()
     menu.click_shop_in_menu()
 
     logging.info("Убедиться, что цена товара изменилась на сохраненную ранее.")
     price_test_product = products_page.get_price_test_product()
     assert price_test_product == new_price, \
-        f"Ошибка: Цена \"{price_test_product}\" не соответствует измененной!"
+        f"Ошибка: Цена '{price_test_product}' не соответствует измененной!"
     Double.print_and_log("Цена тестового продукта изменилась на сохраненную ранее.")
 
 
+@allure.epic("Тест профиля администратора")
+@allure.title("Проверка редактирования имеющегося товара, оставить незаполненным обязательное поле.")
 def test_admin_4(admin_auth):
     driver = admin_auth
-    logging.info("Вход в роли администратора")
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
     edit_products_page = EditProductsPage(driver)
     edit_product_details_page = EditProductDetailsPage(driver)
 
-    logging.info("Нажать на кнопку \"Меню\".")
+    logging.info("Нажать на кнопку 'Меню'.")
     fixed_panel_icons.open_menu()
 
-    logging.info("Найти и нажать на пункт \"Редактировать товары\".")
+    logging.info("Найти и нажать на пункт 'Редактировать товары'.")
     menu.click_edit_products_in_menu()
 
     logging.info("Найти добавленный товар и нажать на кнопку редактирования (иконка карандаша).")
     edit_products_page.click_edit_product_button()
 
-    logging.info("Очистить поле \"Описание\" и оставить незаполненным.")
+    logging.info("Очистить поле 'Описание' и оставить незаполненным.")
     edit_product_details_page.clear_description()
 
-    logging.info("Убедиться, что кнопка \"Обновить товар\" не активна.")
+    logging.info("Убедиться, что кнопка 'Обновить товар' не активна.")
     button_update_product = edit_product_details_page.button_update_product()
     assert not button_update_product.is_enabled(), \
         "Ошибка: Кнопка не должна быть активной!"
-    Double.print_and_log("Кнопка \"Обновить товар\" не активна.")
+    Double.print_and_log("Кнопка 'Обновить товар' не активна.")
 
 
+@allure.epic("Тест профиля администратора")
+@allure.title("Удаление товара из ассортимента.")
 def test_admin_5(admin_auth):
     driver = admin_auth
-    logging.info("Вход в роли администратора")
 
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
     edit_products_page = EditProductsPage(driver)
     products_page = ProductsPage(driver)
 
-    logging.info("Нажать на кнопку \"Меню\".")
+    logging.info("Нажать на кнопку 'Меню'.")
     fixed_panel_icons.open_menu()
 
-    logging.info("Найти и нажать на пункт \"Редактировать товары\".")
+    logging.info("Найти и нажать на пункт 'Редактировать товары'.")
     menu.click_edit_products_in_menu()
 
     logging.info("Найти добавленный ранее товар и нажать на кнопку удаления (иконка корзины).")
     edit_products_page.remove_test_product()
 
-    logging.info("Во вкладке \"Меню\" найти и нажать на пункт \"Магазин\".")
+    logging.info("Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.")
     fixed_panel_icons.open_menu()
     menu.click_shop_in_menu()
 
@@ -181,5 +188,5 @@ def test_admin_5(admin_auth):
     product_names = products_page.get_list_of_product_names()
     for name in product_names:
         assert "Тестовый" not in name, \
-            "Ошибка: Найден продукт со словом \"Тестовый\" в наименовании!"
+            "Ошибка: Найден продукт со словом 'Тестовый' в наименовании!"
     Double.print_and_log("Тестовый продукт отсутствует в списке продуктов.")

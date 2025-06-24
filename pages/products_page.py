@@ -1,5 +1,6 @@
 import time
 
+import allure
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -29,24 +30,24 @@ PLUS_BUTTON_LOCATOR = (
 
 class ProductsPage(Expectation):
 
-    # заголовок "Продукты"
+    @allure.step("Получить заголовок 'Продукты'")
     def get_title_products(self):
         return self.visibility_of_element_located(TITLE_PRODUCTS_LOCATOR, "Продукты").text
 
-    # тестовый продукт
+    @allure.step("Получить имя тестового продукта")
     def get_name_test_product(self):
         return self.visibility_of_element_located(TEST_PRODUCT_LOCATOR, "Тестовый").text
 
-    # цена тестового продукта
+    @allure.step("Получить цену тестового продукта")
     def get_price_test_product(self):
         text_price_test_product = self.visibility_of_element_located(
             PRICE_TEST_PRODUCT_LOCATOR,
             "Цена тестового продукта"
         ).text
-        print(f"Найдена цена тестового продукта - \"{text_price_test_product}\".")
+        print(f"Найдена цена тестового продукта - '{text_price_test_product}'.")
         return int(float(text_price_test_product[:-2]))
 
-    # получить список наименований продукции
+    @allure.step("Получить список наименований продукции")
     def get_list_of_product_names(self):
         names_of_elements = self.visibility_of_all_elements_located(
             PRODUCT_NAMES_LOCATOR,
@@ -58,15 +59,15 @@ class ProductsPage(Expectation):
 
         return product_names
 
-    # выбрать вариант из выпадающего списка
+    @allure.step("Выбрать вариант из выпадающего списка")
     def select_dropdown_option(self, value):
         dropdown = self.visibility_of_element_located(DROPDOWN_LOCATOR, "Выпадающий список")
 
         select = Select(dropdown)
         select.select_by_visible_text(value)
-        print(f"В выпадающем списке выбрано значение: \"{value}\".")
+        print(f"В выпадающем списке выбрано значение: '{value}'.")
 
-    # получить список цен продуктов
+    @allure.step("Получить список цен продуктов")
     def get_list_of_product_prices(self):
         price_elements = self.visibility_of_all_elements_located(PRICES_OF_PRODUCTS_LOCATOR, "Цены продуктов")
 
@@ -76,7 +77,7 @@ class ProductsPage(Expectation):
 
         return prices_of_products
 
-    # нажать меню фильтров
+    @allure.step("Нажать меню фильтров")
     def click_filter_menu(self):
         filter_button = self.visibility_of_element_located(FILTER_BUTTON_LOCATOR, "Меню фильтров")
         filter_button.click()
@@ -85,7 +86,7 @@ class ProductsPage(Expectation):
         else:
             print("Меню фильтров закрыто.")
 
-    # активация чек-боксов в "Категории"
+    @allure.step("Активация чек-боксов в 'Категории'")
     def checkbox_activation(self, value, activate):
         checkbox_locator = (By.XPATH, f"//input[@value='{value}']")
         checkbox_element = self.visibility_of_element_located(checkbox_locator, f"Категория: {value}")
@@ -101,13 +102,13 @@ class ProductsPage(Expectation):
             action_text = "осталась"
 
         status = "активна" if new_state else "не активна"
-        print(f"Категория: \"{value}\" - {action_text} {status}.")
+        print(f"Категория: '{value}\' - {action_text} {status}.")
 
-    # получить количество карточек продукта
+    @allure.step("Получить количество карточек продукта")
     def get_product_card_count(self):
         return len(self.find_elements(PRODUCT_CARDS_LOCATOR[0], PRODUCT_NAMES_LOCATOR[1]))
 
-    # установки диапазона цены
+    @allure.step("Установка диапазона цены")
     def set_price_filter_range(self, min_price, max_price):
         def set_price(locator, error_msg, value):
             price = self.visibility_of_element_located(locator, error_msg)
@@ -118,7 +119,7 @@ class ProductsPage(Expectation):
         set_price(PRICE_TO_LOCATOR, "Цена: до", max_price)
         print(f"Установлен диапазон цены от {min_price} до {max_price}.")
 
-    # получить значение счетчика продукта
+    @allure.step("Получить значение счетчика продукта")
     def get_product_counter_value(self, product_name):
         time.sleep(2)
         counter_value = self.visibility_of_element_located(
@@ -133,7 +134,7 @@ class ProductsPage(Expectation):
         ).get_attribute("value")
         return int(counter_value)
 
-    # нажать выбранную кнопку несколько раз
+    # Нажать выбранную кнопку несколько раз
     def _click_selected_button_repeatedly(self, product_name, action, clicks):
         selected_button = self.visibility_of_element_located(
             (
@@ -151,11 +152,11 @@ class ProductsPage(Expectation):
             selected_button.click()
             time.sleep(0.15)
 
-    # установить количество продукта
+    @allure.step("Установить количество продукта")
     def set_product_quantity(self, product_name, target_quantity):
         current_quantity = self.get_product_counter_value(product_name)
         if current_quantity == target_quantity:
-            print(f"Количество продукта \"{product_name}\" - {current_quantity} шт.")
+            print(f"Количество продукта '{product_name}' - {current_quantity} шт.")
             return
 
         while True:
@@ -167,13 +168,13 @@ class ProductsPage(Expectation):
             self._click_selected_button_repeatedly(product_name, action, clicks)
 
             if new_quantity == target_quantity:
-                print(f"Количество \"{product_name}\" изменено: с {current_quantity} шт. на {new_quantity} шт.")
+                print(f"Количество '{product_name}' изменено: с {current_quantity} шт. на {new_quantity} шт.")
                 break
 
-    # уменьшить количество товара на указанное значение
+    @allure.step("Уменьшить количество товара на указанное значение")
     def decrease_product_quantity(self, product_name, decrease_by):
 
         self._click_selected_button_repeatedly(product_name, "remove", decrease_by)
 
         new_quantity = self.get_product_counter_value(product_name)
-        print(f"Количество \"{product_name}\" уменьшено на {decrease_by}. Текущее: {new_quantity} шт.")
+        print(f"Количество '{product_name}' уменьшено на {decrease_by}. Текущее: {new_quantity} шт.")

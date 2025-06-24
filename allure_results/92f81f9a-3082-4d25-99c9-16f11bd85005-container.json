@@ -1,0 +1,1 @@
+{"uuid": "df95c74a-ac26-48d0-b65e-c40b90afbca8", "children": ["e4a15acd-ba49-43d5-b055-ec5174838e6c"], "befores": [{"name": "go_to_cart", "status": "passed", "steps": [{"name": "Нажать на корзину", "status": "passed", "start": 1750770162943, "stop": 1750770162993}], "start": 1750770162943, "stop": 1750770162993}], "start": 1750770162943, "stop": 1750770165347}

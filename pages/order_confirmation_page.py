@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 
 from utils.expectation import Expectation
@@ -12,11 +13,11 @@ COMPLETE_ORDER_BUTTON_LOCATOR = (By.CSS_SELECTOR, ".btn-success")
 
 class OrderConfirmationPage(Expectation):
 
-    # заголовок "Оформление заказа: Подтверждение заказа"
+    @allure.step("Получить заголовок 'Оформление заказа: Подтверждение заказа'")
     def get_title_order_confirmation(self):
         return self.visibility_of_element_located(ORDER_CONFIRMATION_LOCATOR, "Подтверждение заказа").text
 
-    # данные для подтверждения заказа
+    @allure.step("Получить данные для подтверждения заказа")
     def get_order_confirmation_data(self):
         data = {}
 
@@ -40,7 +41,7 @@ class OrderConfirmationPage(Expectation):
 
         return data
 
-    # нажать кнопку "Завершить заказ"
+    @allure.step("Нажать кнопку 'Завершить заказ'")
     def click_complete_order_button(self):
         complete_order_button = self.visibility_of_element_located(
             COMPLETE_ORDER_BUTTON_LOCATOR,
@@ -48,4 +49,4 @@ class OrderConfirmationPage(Expectation):
         )
         self.move_to_element(complete_order_button)
         complete_order_button.click()
-        print("На странице для подтверждения заказа нажата кнопка \"Завершить заказ\".")
+        print("На странице для подтверждения заказа нажата кнопка 'Завершить заказ'.")

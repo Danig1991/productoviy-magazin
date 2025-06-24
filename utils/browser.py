@@ -1,3 +1,4 @@
+import allure
 from selenium import webdriver
 
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -51,13 +52,13 @@ class Browser:
         service = EdgeService(EdgeChromiumDriverManager().install())
         return webdriver.Edge(service=service)
 
-    # открыть браузер/развернуть окно на весь экран
+    @allure.step("Открыть браузер/развернуть окно на весь экран")
     def open(self, url):
         self.driver.get(url)
         self.driver.maximize_window()
         Double.print_and_log(f"Браузер {self.browser_type} открыт.")
 
-    # закрыть браузер
+    @allure.step("Закрыть браузер")
     def quit(self):
         self.driver.quit()
         Double.print_and_log(f"Браузер {self.browser_type} закрыт.")

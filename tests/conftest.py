@@ -38,6 +38,7 @@ def admin_auth():
         AuthConfig.ADMIN_PASSWORD,
         "\nАвторизация администратором"
     )
+    logging.info("Вход в роли администратора")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -52,6 +53,7 @@ def shopper_auth():
         AuthConfig.SHOPPER_PASSWORD,
         "\nАвторизация покупателем."
     )
+    logging.info("Вход в роли пользователя")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -64,6 +66,7 @@ def none_auth():
     browser, driver = conf_authorization(
         text_authorization="\nАвторизация отсутствует."
     )
+    logging.info("Вход не выполнен")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -74,11 +77,13 @@ def none_auth():
 @pytest.fixture(scope="function")
 def add_two_products(shopper_auth):
     driver = shopper_auth
+    product_name = ProductConfig.PRODUCT_NAME
 
     ProductsPage(driver).set_product_quantity(
-        product_name=ProductConfig.PRODUCT_NAME,
+        product_name=product_name,
         target_quantity=ProductConfig.QUANTITY_2
     )
+    logging.info(f"Добавлено 2 продукта {product_name}")
 
 
 # перейти в корзину
@@ -87,6 +92,7 @@ def go_to_cart(shopper_auth):
     driver = shopper_auth
 
     FixedPanelIcons(driver).click_shopping_cart()
+    logging.info("Переход в корзину")
 
 
 # перейти на страницу "Оформление заказа: Данные пользователя"
@@ -95,6 +101,7 @@ def go_to_checkout_user_data(shopper_auth):
     driver = shopper_auth
 
     ShoppingCartPage(driver).click_button_place_order()
+    logging.info("Переход на страницу 'Оформление заказа: Данные пользователя'")
 
 
 # настройка записи логов
