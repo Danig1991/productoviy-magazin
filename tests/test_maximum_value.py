@@ -12,19 +12,16 @@ from utils.config import ProductConfig
 @allure.title("Максимальное количество товаров в корзине - 100 единиц одного наименования.")
 def test_max_1(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
-    shopping_cart_page = ShoppingCartPage(driver)
-    fixed_panel_icons = FixedPanelIcons(driver)
     product_name = ProductConfig.PRODUCT_NAME
     quantity_105 = ProductConfig.QUANTITY_105
 
     # Добавить в корзину один продукт в количестве 105 шт.
-    products_page.set_product_quantity(product_name, quantity_105)
+    ProductsPage(driver).set_product_quantity(product_name, quantity_105)
     # Перейти на страницу 'Корзинка' (нажать на иконку корзины).
-    fixed_panel_icons.click_shopping_cart()
+    FixedPanelIcons(driver).click_shopping_cart()
 
     logging.info("Убедиться, что товара добавлено только 100 шт.")
-    counter_value = shopping_cart_page.get_product_counter_value(product_name)
+    counter_value = ShoppingCartPage(driver).get_product_counter_value(product_name)
     assert counter_value <= 100, f"Ошибка: Добавлено {counter_value} шт. продукта! Максимум 100."
     logging.info("Добавлено не более 100 единиц одного наименования продукта.")
 
@@ -33,18 +30,15 @@ def test_max_1(shopper_auth):
 @allure.title("Общая сумма заказа не должна превышать 100000 ₽.")
 def test_max_2(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
-    shopping_cart_page = ShoppingCartPage(driver)
-    fixed_panel_icons = FixedPanelIcons(driver)
     product_name = ProductConfig.PRODUCT_NAME
     quantity_505 = ProductConfig.QUANTITY_505
 
     # Добавить в корзину один продукт на сумму более 100000 ₽ (505 шт. при цене 199 р.).
-    products_page.set_product_quantity(product_name, quantity_505)
+    ProductsPage(driver).set_product_quantity(product_name, quantity_505)
     # Перейти на страницу 'Корзинка' (нажать на иконку корзины).
-    fixed_panel_icons.click_shopping_cart()
+    FixedPanelIcons(driver).click_shopping_cart()
 
     logging.info("Убедиться, что общая сумма заказа не более 100000 ₽.")
-    total_sum = shopping_cart_page.get_total_sum()
+    total_sum = ShoppingCartPage(driver).get_total_sum()
     assert total_sum <= 100_000, f"Ошибка: Общая сумма заказа {total_sum} ₽! Максимум 100000₽."
     logging.info("Общая сумма заказа не превышает 100000 ₽.")

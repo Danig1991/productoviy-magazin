@@ -14,12 +14,10 @@ def test_autf_1(shopper_auth):
     # Открыть страницу авторизации (http://91.197.96.80).
     # Ввести корректные логин и пароль покупателя.
     # Нажать на кнопку 'Войти'.
-
     driver = shopper_auth
-    products_page = ProductsPage(driver)
 
     logging.info("Убедиться в успешной авторизации (Найти надпись 'Продукты')")
-    title_products = products_page.get_title_products()
+    title_products = ProductsPage(driver).get_title_products()
     assert title_products == "Продукты", \
         "Ошибка: Заголовок 'Продукты' на странице не найден!"
     logging.info("Выполнен переход на страницу 'Продукты'.")
@@ -31,22 +29,18 @@ def test_autf_2(admin_auth):
     # Открыть страницу авторизации (http://91.197.96.80).
     # Ввести корректные логин и пароль администратора.
     # Нажать на кнопку 'Войти'.
-
     driver = admin_auth
-    products_page = ProductsPage(driver)
-    fixed_panel_icons = FixedPanelIcons(driver)
-    menu = Menu(driver)
 
     logging.info("Убедиться в успешной авторизации (Найти надпись 'Продукты')")
-    title_products = products_page.get_title_products()
+    title_products = ProductsPage(driver).get_title_products()
     assert title_products == "Продукты", \
         "Ошибка: Заголовок 'Продукты' на странице не найден!"
     logging.info("Выполнен переход на страницу 'Продукты'.")
 
     logging.info("Убедиться, что авторизовались в роли администратора "
                  "(Во вкладке 'Меню' найти пункт 'Редактировать товары').")
-    fixed_panel_icons.open_menu()
-    item_edit_products = menu.edit_products_in_menu().text
+    FixedPanelIcons(driver).open_menu()
+    item_edit_products = Menu(driver).edit_products_in_menu().text
     assert item_edit_products == "Редактировать товары", \
         "Ошибка: Пункт 'Редактировать товары' в меню не найден!"
     logging.info("В меню имеется пункт 'Редактировать товары'.")
@@ -58,12 +52,10 @@ def test_autf_3(none_auth):
     # Открыть страницу авторизации (http://91.197.96.80).
     # Оставить поля для ввода логина и пароля пустыми.
     # Нажать на кнопку 'Войти'.
-
     driver = none_auth
-    authorization_page = AuthorizationPage(driver)
 
     logging.info("Убедиться, что все еще находимся на странице авторизации.")
-    title_authorization = authorization_page.get_title_authorization()
+    title_authorization = AuthorizationPage(driver).get_title_authorization()
     assert title_authorization == "Авторизация", \
         "Ошибка: Заголовок 'Авторизация' на странице не найден!"
     logging.info("Все еще находимся на странице авторизации.")

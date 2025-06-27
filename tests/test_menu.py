@@ -13,16 +13,14 @@ from pages.shopping_cart_page import ShoppingCartPage
 @allure.title("Вкладка 'Меню' должна содержать пункты: 'Магазин', 'Корзинка', 'Выход'.")
 def test_menu_1(shopper_auth):
     driver = shopper_auth
-    fixed_panel_icons = FixedPanelIcons(driver)
-    menu = Menu(driver)
 
     # Нажать на кнопку 'Меню'.
-    fixed_panel_icons.open_menu()
+    FixedPanelIcons(driver).open_menu()
 
     logging.info("Убедиться в наличии пунктов: 'Магазин', 'Корзинка', 'Выход'.")
-    shop_in_menu = menu.shop_in_menu()
-    shopping_cart_in_menu = menu.shopping_cart_in_menu()
-    exit_button_in_menu = menu.exit_button_in_menu()
+    shop_in_menu = Menu(driver).shop_in_menu()
+    shopping_cart_in_menu = Menu(driver).shopping_cart_in_menu()
+    exit_button_in_menu = Menu(driver).exit_button_in_menu()
 
     assert shop_in_menu.is_displayed(), "Ошибка: Пункт 'Магазин' не найден или не отображается!"
     assert shopping_cart_in_menu.is_displayed(), "Ошибка: Пункт 'Корзинка' не найден или не отображается!"
@@ -35,17 +33,14 @@ def test_menu_1(shopper_auth):
 @allure.title("Пункт 'Магазин' служит для перевода на страницу с каталогом товаров.")
 def test_menu_2(shopper_auth):
     driver = shopper_auth
-    fixed_panel_icons = FixedPanelIcons(driver)
-    menu = Menu(driver)
-    products_page = ProductsPage(driver)
 
     # Нажать на кнопку 'Меню'.
-    fixed_panel_icons.open_menu()
+    FixedPanelIcons(driver).open_menu()
     # Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.
-    menu.click_shop_in_menu()
+    Menu(driver).click_shop_in_menu()
 
     logging.info("Убедиться, что находимся на странице 'Продукты'.")
-    title_products = products_page.get_title_products()
+    title_products = ProductsPage(driver).get_title_products()
     assert title_products == "Продукты", \
         "Ошибка: Заголовок 'Продукты' на странице не найден!"
     logging.info("Выполнен корректный переход на страницу 'Продукты'.")
@@ -56,17 +51,13 @@ def test_menu_2(shopper_auth):
 def test_menu_3(shopper_auth):
     driver = shopper_auth
 
-    fixed_panel_icons = FixedPanelIcons(driver)
-    menu = Menu(driver)
-    shopping_cart_page = ShoppingCartPage(driver)
-
     # Нажать на кнопку 'Меню'.
-    fixed_panel_icons.open_menu()
+    FixedPanelIcons(driver).open_menu()
     # Во вкладке 'Меню' найти и нажать на пункт 'Корзинка'.
-    menu.click_shopping_cart_in_menu()
+    Menu(driver).click_shopping_cart_in_menu()
 
     logging.info("Убедиться, что находимся на странице 'Корзинка'.")
-    title_shopping_cart = shopping_cart_page.get_title_shopping_cart()
+    title_shopping_cart = ShoppingCartPage(driver).get_title_shopping_cart()
     assert title_shopping_cart == "Корзинка", \
         "Ошибка: Заголовок 'Корзинка' на странице не найден!"
     logging.info("Выполнен корректный переход на страницу 'Корзинка'.")
@@ -77,17 +68,13 @@ def test_menu_3(shopper_auth):
 def test_menu_4(shopper_auth):
     driver = shopper_auth
 
-    fixed_panel_icons = FixedPanelIcons(driver)
-    menu = Menu(driver)
-    authorization_page = AuthorizationPage(driver)
-
     # Нажать на кнопку 'Меню'.
-    fixed_panel_icons.open_menu()
+    FixedPanelIcons(driver).open_menu()
     # Во вкладке 'Меню' найти и нажать на кнопку 'Выход'.
-    menu.click_exit_button_in_menu()
+    Menu(driver).click_exit_button_in_menu()
 
     logging.info("Убедиться, что находимся на странице авторизации.")
-    title_authorization = authorization_page.get_title_authorization()
+    title_authorization = AuthorizationPage(driver).get_title_authorization()
     assert title_authorization == "Авторизация", \
         "Ошибка: Заголовок 'Авторизация' на странице не найден!"
     logging.info("Завершение сессии пользователя, переход на страницу авторизации.")

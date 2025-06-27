@@ -10,15 +10,14 @@ from utils.config import FilterConfig
 @allure.title("Сортировка товара через выпадающий список по цене (сначала подешевле).")
 def test_filter_1(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
     sort_by_price_low_to_high = FilterConfig.SORT_BY_PRICE_LOW_TO_HIGH
 
     # На странице с продуктами найти и нажать выпадающий список.
     # В выпадающем списке выбрать значение: 'Цена: Сначала подешевле'.
-    products_page.select_dropdown_option(sort_by_price_low_to_high)
+    ProductsPage(driver).select_dropdown_option(sort_by_price_low_to_high)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
-    product_prices = products_page.get_list_of_product_prices()
+    product_prices = ProductsPage(driver).get_list_of_product_prices()
     assert product_prices == sorted(product_prices), \
         f"Ошибка: Цены не отсортированы по возрастанию! Фактический порядок: {product_prices}"
     logging.info("Товар отображается по цене от меньшей к большей.")
@@ -28,15 +27,14 @@ def test_filter_1(shopper_auth):
 @allure.title("Сортировка товара через выпадающий список по цене (сначала подороже).")
 def test_filter_2(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
     sort_by_price_high_to_low = FilterConfig.SORT_BY_PRICE_HIGH_TO_LOW
 
     # На странице с продуктами найти и нажать выпадающий список.
     # В выпадающем списке выбрать значение: 'Цена: Сначала подороже'.
-    products_page.select_dropdown_option(sort_by_price_high_to_low)
+    ProductsPage(driver).select_dropdown_option(sort_by_price_high_to_low)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
-    product_prices = products_page.get_list_of_product_prices()
+    product_prices = ProductsPage(driver).get_list_of_product_prices()
     assert product_prices == sorted(product_prices, reverse=True), \
         f"Ошибка: Цены не отсортированы по убыванию! Фактический порядок: {product_prices}"
     logging.info("Товар отображается по цене от большей к меньшей.")
@@ -46,15 +44,14 @@ def test_filter_2(shopper_auth):
 @allure.title("Сортировка товара через выпадающий список по наименованию (от А до Я).")
 def test_filter_3(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
     sort_by_name_a_to_z = FilterConfig.SORT_BY_NAME_A_TO_Z
 
     # На странице с продуктами найти и нажать выпадающий список.
     # В выпадающем списке выбрать значение: 'Наименование: от А до Я'.
-    products_page.select_dropdown_option(sort_by_name_a_to_z)
+    ProductsPage(driver).select_dropdown_option(sort_by_name_a_to_z)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
-    product_names = products_page.get_list_of_product_names()
+    product_names = ProductsPage(driver).get_list_of_product_names()
     assert product_names == sorted(product_names), \
         f"Ошибка: Наименования продуктов не отсортированы по алфавиту! Фактический порядок: {product_names}"
     logging.info("Товар отображается в алфавитном порядке.")
@@ -64,15 +61,14 @@ def test_filter_3(shopper_auth):
 @allure.title("Сортировка товара через выпадающий список по наименованию (от Я до А).")
 def test_filter_4(shopper_auth):
     driver = shopper_auth
-    products_page = ProductsPage(driver)
     sort_by_name_z_to_a = FilterConfig.SORT_BY_NAME_Z_TO_A
 
     # На странице с продуктами найти и нажать выпадающий список.
     # В выпадающем списке выбрать значение: 'Наименование: от Я до А'.
-    products_page.select_dropdown_option(sort_by_name_z_to_a)
+    ProductsPage(driver).select_dropdown_option(sort_by_name_z_to_a)
 
     logging.info("Убедиться, что ассортимент товара отсортирован верно.")
-    product_names = products_page.get_list_of_product_names()
+    product_names = ProductsPage(driver).get_list_of_product_names()
     assert product_names == sorted(product_names, reverse=True), \
         (f"Ошибка: Наименования продуктов не отсортированы по алфавиту в обратном порядке! "
          f"Фактический порядок: {product_names}")
