@@ -1,64 +1,55 @@
+import logging
+
 import allure
 from selenium.webdriver.common.by import By
 
-from utils.expectation import Expectation
-
-NAME_LOCATOR = (By.XPATH, "//input[@placeholder='Наименование']")
-DESCRIPTION_LOCATOR = (By.XPATH, "//input[@placeholder='Описание']")
-CATEGORY_LOCATOR = (By.XPATH, "//input[@placeholder='Ожидаемая категория']")
-PRICE_LOCATOR = (By.XPATH, "//input[@placeholder='Цена']")
-IMAGE_URL_LOCATOR = (By.XPATH, "//input[@placeholder='Image Source']")
-BUTTON_BACK_TO_PRODUCTS_LOCATOR = (By.XPATH, "//button[contains(text(), 'Обратно к товарам')]")
-BUTTON_CREATE_PRODUCT_LOCATOR = (By.XPATH, "//button[contains(text(), 'Создать товар')]")
+from utils.action_with_element import ActionWithElement
 
 
-class AddProductPage(Expectation):
+class AddProductPage(ActionWithElement):
+    NAME_LOCATOR = (By.XPATH, "//input[@placeholder='Наименование']")
+    DESCRIPTION_LOCATOR = (By.XPATH, "//input[@placeholder='Описание']")
+    CATEGORY_LOCATOR = (By.XPATH, "//input[@placeholder='Ожидаемая категория']")
+    PRICE_LOCATOR = (By.XPATH, "//input[@placeholder='Цена']")
+    IMAGE_URL_LOCATOR = (By.XPATH, "//input[@placeholder='Image Source']")
+    BUTTON_BACK_TO_PRODUCTS_LOCATOR = (By.XPATH, "//button[contains(text(), 'Обратно к товарам')]")
+    BUTTON_CREATE_PRODUCT_LOCATOR = (By.XPATH, "//button[contains(text(), 'Создать товар')]")
 
-    @allure.step("Добавить наименование")
-    def add_name(self, name):
-        self.visibility_of_element_located(NAME_LOCATOR, "Наименование").send_keys(name)
-        print(f"Добавлено наименование '{name}'")
-
-    @allure.step("Добавить описание")
-    def add_description(self, description):
-        self.visibility_of_element_located(DESCRIPTION_LOCATOR, "Описание").send_keys(description)
-        print(f"Добавлено описание '{description}'")
-
-    @allure.step("Добавить категорию")
-    def add_category(self, category):
-        self.visibility_of_element_located(CATEGORY_LOCATOR, "Ожидаемая категория").send_keys(category)
-        print(f"Добавлена ожидаемая категория '{category}'")
-
-    @allure.step("Добавить цену")
-    def add_price(self, price):
-        self.visibility_of_element_located(PRICE_LOCATOR, "Цена").send_keys(price)
-        print(f"Добавлена цена '{price}'р.")
-
-    @allure.step("Добавить URL картинки")
-    def add_image_url(self, image_url):
-        self.visibility_of_element_located(IMAGE_URL_LOCATOR, "URL картинки").send_keys(image_url)
-        print(f"Добавлено URL картинки '{image_url}'")
+    @allure.step("Заполнение полей карточки товара")
+    def add_product_data(self, name=None, description=None, category=None, price=None, image_url=None):
+        fields_data = [
+            (name, self.NAME_LOCATOR, "Наименование", "Наименование не введено."),
+            (description, self.DESCRIPTION_LOCATOR, "Описание", "Описание не введено."),
+            (category, self.CATEGORY_LOCATOR, "Ожидаемая категория", "Ожидаемая категория не введена."),
+            (price, self.PRICE_LOCATOR, "Цена", "Цена не введена."),
+            (image_url, self.IMAGE_URL_LOCATOR, "URL картинки", "URL картинки не введен.")
+        ]
+        logging.info(f"Добавлено⤵️")
+        for value, locator, field_name, error_msg in fields_data:
+            if value:
+                self.visibility_of_element_located(locator, field_name).send_keys(value)
+                logging.info(f"{field_name}: '{value}'")
+            else:
+                logging.info(error_msg)
 
     @allure.step("Нажать кнопку 'Обратно к товарам'")
     def click_button_back_to_products(self):
         button_back_to_products = self.visibility_of_element_located(
-            BUTTON_BACK_TO_PRODUCTS_LOCATOR,
+            self.BUTTON_BACK_TO_PRODUCTS_LOCATOR,
             "Обратно к товарам"
         )
-        self.move_to_element(button_back_to_products)
-        button_back_to_products.click()
-        print("Нажата кнопка 'Обратно к товарам'.")
+        self.click_button(button_back_to_products)
+        logging.info("Нажатие кнопки 'Обратно к товарам'.")
 
     # кнопка "Создать товар"
     def button_create_product(self):
         button_create_product = self.visibility_of_element_located(
-            BUTTON_CREATE_PRODUCT_LOCATOR,
+            self.BUTTON_CREATE_PRODUCT_LOCATOR,
             "Создать товар"
         )
-        self.move_to_element(button_create_product)
         return button_create_product
 
     @allure.step("Нажать кнопку 'Создать товар'")
     def click_button_create_product(self):
-        self.button_create_product().click()
-        print("Нажата кнопка 'Создать товар'.")
+        self.click_button(self.button_create_product())
+        logging.info("Нажатие кнопки 'Создать товар'.")

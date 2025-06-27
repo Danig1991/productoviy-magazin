@@ -20,12 +20,17 @@ class AuthConfig:
 
 class ProductData:
     # значения для нового продукта
-    NAME = "Тестовый Пирожок Вишневый"
-    DESCRIPTION = "Обжаренный во фритюре пирожок со сладкой начинкой из вишни 80 г"
-    CATEGORY = "Пирожок"
-    PRICE = 65
-    NEW_PRICE = 70
-    IMAGE_URL = "https://vkusnotochkamenu.ru/image/cachewebp/catalog/photo/521573545-pirogok-vishnevyj-600x600.webp"
+    @staticmethod
+    def get_product_data():
+        return {
+            "Наименование": "Тестовый Пирожок Вишневый",
+            "Описание": "Обжаренный во фритюре пирожок со сладкой начинкой из вишни 80 г",
+            "Ожидаемая категория": "Пирожок",
+            "Цена": 65,
+            "Новая цена": 70,
+            "URL картинки": "https://vkusnotochkamenu.ru/image/cachewebp/catalog/photo/"
+                            "521573545-pirogok-vishnevyj-600x600.webp"
+        }
 
 
 class ProductConfig:
@@ -57,34 +62,20 @@ class FilterConfig:
 
 
 class UserData:
-    faker = Faker("ru_Ru")
+    # генерирование данных пользователя
+    def __init__(self):
+        self.__faker = Faker("ru_Ru")
 
-    # имя
-    def get_first_name(self):
-        return self.faker.first_name_male()
-
-    # фамилия
-    def get_last_name(self):
-        return self.faker.last_name_male()
-
-    # отчество
-    def get_middle_name(self):
-        return self.faker.middle_name_male()
-
-    # адрес доставки
-    def get_address(self):
-        return self.faker.street_address()
-
-    # номер карты
-    def get_card_number(self):
-        return (f"{self.faker.random_number(digits=4, fix_len=True)} "
-                f"{self.faker.random_number(digits=4, fix_len=True)} "
-                f"{self.faker.random_number(digits=4, fix_len=True)} "
-                f"{self.faker.random_number(digits=4, fix_len=True)}")
-
-    # нечисловой номер карты
-    def get_non_numeric_card_number(self):
-        return (f"{self.faker.password(length=4, digits=False, upper_case=False)} "
-                f"{self.faker.password(length=4, digits=False, upper_case=False)} "
-                f"{self.faker.password(length=4, digits=False, upper_case=False)} "
-                f"{self.faker.password(length=4, digits=False, upper_case=False)}")
+    def get_user_data(self):
+        return {
+            "Имя": self.__faker.first_name_male(),
+            "Фамилия": self.__faker.last_name_male(),
+            "Отчество": self.__faker.middle_name_male(),
+            "Адрес доставки": self.__faker.street_address(),
+            "Номер карты": " ".join(
+                [str(self.__faker.random_number(digits=4, fix_len=True)) for _ in range(4)]
+            ),
+            "Нечисловой номер карты": " ".join(
+                [self.__faker.password(length=4, digits=False, upper_case=False) for _ in range(4)]
+            )
+        }

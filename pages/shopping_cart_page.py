@@ -1,25 +1,25 @@
+import logging
 import time
 
 import allure
 from selenium.webdriver.common.by import By
 
-from utils.expectation import Expectation
-
-TITLE_SHOPPING_CART_LOCATOR = (By.CSS_SELECTOR, "div.navbar-brand")
-EMPTY_CART_LOCATOR = (By.XPATH, "//*[contains(text(), 'в корзине пока пусто')]")
-BUTTON_PLACE_ORDER_LOCATOR = (By.CSS_SELECTOR, ".btn-success")
-TOTAL_SUM_LOCATOR = (By.XPATH, "//*[contains(text(), 'Итого')]")
+from utils.action_with_element import ActionWithElement
 
 
-class ShoppingCartPage(Expectation):
+class ShoppingCartPage(ActionWithElement):
+    TITLE_SHOPPING_CART_LOCATOR = (By.CSS_SELECTOR, "div.navbar-brand")
+    EMPTY_CART_LOCATOR = (By.XPATH, "//*[contains(text(), 'в корзине пока пусто')]")
+    BUTTON_PLACE_ORDER_LOCATOR = (By.CSS_SELECTOR, ".btn-success")
+    TOTAL_SUM_LOCATOR = (By.XPATH, "//*[contains(text(), 'Итого')]")
 
     @allure.step("Получить заголовок 'Корзинка'")
     def get_title_shopping_cart(self):
-        return self.visibility_of_element_located(TITLE_SHOPPING_CART_LOCATOR, "Корзинка").text
+        return self.visibility_of_element_located(self.TITLE_SHOPPING_CART_LOCATOR, "Корзинка").text
 
     @allure.step("Получить надпись 'в корзине пока пусто'")
     def get_empty_cart_message(self):
-        return self.visibility_of_element_located(EMPTY_CART_LOCATOR, "Пустая корзинка").text
+        return self.visibility_of_element_located(self.EMPTY_CART_LOCATOR, "Пустая корзинка").text
 
     # Нажать выбранную кнопку несколько раз
     def _click_selected_button_repeatedly(self, product_name, action, clicks):
@@ -34,31 +34,31 @@ class ShoppingCartPage(Expectation):
             f"Кнопка {'+' if action == 'add' else '-'} для '{product_name}'"
         )
 
-        self.move_to_element(selected_button)
-
         for _ in range(clicks):
-            selected_button.click()
-            time.sleep(0.15)
+            self.click_button(selected_button)
 
     @allure.step("Уменьшить количество товара на указанное значение")
     def decrease_product_quantity(self, product_name, decrease_by):
         self._click_selected_button_repeatedly(product_name, "remove", decrease_by)
-        print(f"Количество '{product_name}' уменьшено на {decrease_by}.")
+        logging.info(f"Количество '{product_name}' уменьшено на {decrease_by}.")
 
     # кнопка "Оформить заказ"
     def button_place_order(self):
-        button_place_order = self.visibility_of_element_located(BUTTON_PLACE_ORDER_LOCATOR, "Оформить заказ")
-        self.move_to_element(button_place_order)
+        button_place_order = self.visibility_of_element_located(
+            self.BUTTON_PLACE_ORDER_LOCATOR,
+            "Оформить заказ"
+        )
         return button_place_order
 
     @allure.step("Нажать кнопку 'Оформить заказ'")
     def click_button_place_order(self):
-        self.button_place_order().click()
-        print("На странице \"Корзинка\" нажата кнопка \"Оформить заказ\".")
+        self.click_button(self.button_place_order())
+        logging.info("Нажатие кнопки 'Оформить заказ'. "
+                     "Переход на страницу 'Оформление заказа: Данные пользователя'")
 
     @allure.step("Получить значение счетчика продукта")
     def get_product_counter_value(self, product_name):
-        time.sleep(2)
+        time.sleep(1.5)
         counter_value = self.visibility_of_element_located(
             (
                 By.XPATH,
@@ -68,8 +68,8 @@ class ShoppingCartPage(Expectation):
 
             ),
             f"Счетчик продукта '{product_name}'"
-        ).get_attribute("value")
-        return int(counter_value)
+        )
+        return int(counter_value.get_attribute("value"))
 
     @allure.step("Получить цену продукта")
     def get_product_price(self, product_name):
@@ -86,8 +86,7 @@ class ShoppingCartPage(Expectation):
 
     @allure.step("Получить итоговую сумму")
     def get_total_sum(self):
-        total_sum_element = self.visibility_of_element_located(TOTAL_SUM_LOCATOR, "Итоговая сумма")
-        self.move_to_element(total_sum_element)
+        total_sum_element = self.visibility_of_element_located(self.TOTAL_SUM_LOCATOR, "Итоговая сумма")
         total_sum = total_sum_element.text.split(":")[1].replace("₽", "").strip()
 
         return int(total_sum)

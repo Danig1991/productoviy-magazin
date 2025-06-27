@@ -7,18 +7,16 @@ from pages.fixed_navigation_bar.fixed_panel_icons import FixedPanelIcons
 from pages.fixed_navigation_bar.menu.menu import Menu
 from pages.products_page import ProductsPage
 from pages.shopping_cart_page import ShoppingCartPage
-from utils.double import Double
 
 
 @allure.epic("Тест меню.")
 @allure.title("Вкладка 'Меню' должна содержать пункты: 'Магазин', 'Корзинка', 'Выход'.")
 def test_menu_1(shopper_auth):
     driver = shopper_auth
-
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
 
-    logging.info("Нажать на кнопку 'Меню'.")
+    # Нажать на кнопку 'Меню'.
     fixed_panel_icons.open_menu()
 
     logging.info("Убедиться в наличии пунктов: 'Магазин', 'Корзинка', 'Выход'.")
@@ -30,29 +28,27 @@ def test_menu_1(shopper_auth):
     assert shopping_cart_in_menu.is_displayed(), "Ошибка: Пункт 'Корзинка' не найден или не отображается!"
     assert exit_button_in_menu.is_displayed(), "Ошибка: Кнопка 'Выход' не найдена или не отображается!"
 
-    Double.print_and_log("Пункты: 'Магазин', 'Корзинка', 'Выход' присутствуют в меню.")
+    logging.info("Пункты: 'Магазин', 'Корзинка', 'Выход' присутствуют в меню.")
 
 
 @allure.epic("Тест меню.")
 @allure.title("Пункт 'Магазин' служит для перевода на страницу с каталогом товаров.")
 def test_menu_2(shopper_auth):
     driver = shopper_auth
-
     fixed_panel_icons = FixedPanelIcons(driver)
     menu = Menu(driver)
     products_page = ProductsPage(driver)
 
-    logging.info("Нажать на кнопку 'Меню'.")
+    # Нажать на кнопку 'Меню'.
     fixed_panel_icons.open_menu()
-
-    logging.info("Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.")
+    # Во вкладке 'Меню' найти и нажать на пункт 'Магазин'.
     menu.click_shop_in_menu()
 
     logging.info("Убедиться, что находимся на странице 'Продукты'.")
     title_products = products_page.get_title_products()
     assert title_products == "Продукты", \
         "Ошибка: Заголовок 'Продукты' на странице не найден!"
-    Double.print_and_log("Выполнен корректный переход на страницу 'Продукты'.")
+    logging.info("Выполнен корректный переход на страницу 'Продукты'.")
 
 
 @allure.epic("Тест меню.")
@@ -64,17 +60,16 @@ def test_menu_3(shopper_auth):
     menu = Menu(driver)
     shopping_cart_page = ShoppingCartPage(driver)
 
-    logging.info("Нажать на кнопку 'Меню'.")
+    # Нажать на кнопку 'Меню'.
     fixed_panel_icons.open_menu()
-
-    logging.info("Во вкладке 'Меню' найти и нажать на пункт 'Корзинка'.")
+    # Во вкладке 'Меню' найти и нажать на пункт 'Корзинка'.
     menu.click_shopping_cart_in_menu()
 
     logging.info("Убедиться, что находимся на странице 'Корзинка'.")
     title_shopping_cart = shopping_cart_page.get_title_shopping_cart()
     assert title_shopping_cart == "Корзинка", \
         "Ошибка: Заголовок 'Корзинка' на странице не найден!"
-    Double.print_and_log("Выполнен корректный переход на страницу 'Корзинка'.")
+    logging.info("Выполнен корректный переход на страницу 'Корзинка'.")
 
 
 @allure.epic("Тест меню.")
@@ -86,14 +81,13 @@ def test_menu_4(shopper_auth):
     menu = Menu(driver)
     authorization_page = AuthorizationPage(driver)
 
-    logging.info("Нажать на кнопку 'Меню'.")
+    # Нажать на кнопку 'Меню'.
     fixed_panel_icons.open_menu()
-
-    logging.info("Во вкладке 'Меню' найти и нажать на кнопку 'Выход'.")
+    # Во вкладке 'Меню' найти и нажать на кнопку 'Выход'.
     menu.click_exit_button_in_menu()
 
     logging.info("Убедиться, что находимся на странице авторизации.")
-    title_authorization = authorization_page.title_authorization()
+    title_authorization = authorization_page.get_title_authorization()
     assert title_authorization == "Авторизация", \
         "Ошибка: Заголовок 'Авторизация' на странице не найден!"
-    Double.print_and_log("Завершение сессии пользователя, переход на страницу авторизации.")
+    logging.info("Завершение сессии пользователя, переход на страницу авторизации.")

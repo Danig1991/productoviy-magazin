@@ -14,13 +14,12 @@ from utils.config import AuthConfig, Url, ProductConfig
 
 # конфигурация авторизации
 def conf_authorization(login: str = None, password: str = None, text_authorization: str = None):
-    print(text_authorization)
-
     # инициализация браузера
     browser = Browser(browser_type="chrome")
     browser.open(url=Url.BASE_URL)
     driver = browser.driver
 
+    logging.info(text_authorization)
     # заполнение формы авторизации
     authorization_page = AuthorizationPage(driver)
     authorization_page.enter_login(login)
@@ -36,9 +35,8 @@ def admin_auth():
     browser, driver = conf_authorization(
         AuthConfig.ADMIN_LOGIN,
         AuthConfig.ADMIN_PASSWORD,
-        "\nАвторизация администратором"
+        "Авторизация администратором"
     )
-    logging.info("Вход в роли администратора")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -51,9 +49,8 @@ def shopper_auth():
     browser, driver = conf_authorization(
         AuthConfig.SHOPPER_LOGIN,
         AuthConfig.SHOPPER_PASSWORD,
-        "\nАвторизация покупателем."
+        "Авторизация покупателем."
     )
-    logging.info("Вход в роли пользователя")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -64,9 +61,8 @@ def shopper_auth():
 @pytest.fixture(scope="function")
 def none_auth():
     browser, driver = conf_authorization(
-        text_authorization="\nАвторизация отсутствует."
+        text_authorization="Авторизация отсутствует."
     )
-    logging.info("Вход не выполнен")
     # передача драйвера
     yield driver
     # закрытие браузера
@@ -77,31 +73,24 @@ def none_auth():
 @pytest.fixture(scope="function")
 def add_two_products(shopper_auth):
     driver = shopper_auth
-    product_name = ProductConfig.PRODUCT_NAME
-
     ProductsPage(driver).set_product_quantity(
-        product_name=product_name,
+        product_name=ProductConfig.PRODUCT_NAME,
         target_quantity=ProductConfig.QUANTITY_2
     )
-    logging.info(f"Добавлено 2 продукта {product_name}")
 
 
 # перейти в корзину
 @pytest.fixture(scope="function")
 def go_to_cart(shopper_auth):
     driver = shopper_auth
-
     FixedPanelIcons(driver).click_shopping_cart()
-    logging.info("Переход в корзину")
 
 
 # перейти на страницу "Оформление заказа: Данные пользователя"
 @pytest.fixture(scope="function")
 def go_to_checkout_user_data(shopper_auth):
     driver = shopper_auth
-
     ShoppingCartPage(driver).click_button_place_order()
-    logging.info("Переход на страницу 'Оформление заказа: Данные пользователя'")
 
 
 # настройка записи логов
@@ -127,7 +116,7 @@ test_results = {}
 
 # хук для извлечения результата теста
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
+def pytest_runtest_makereport(call):
     outcome = yield
     report = outcome.get_result()
 
@@ -144,7 +133,7 @@ def pytest_runtest_makereport(item, call):
 def auto_log_test(request: pytest.FixtureRequest):
     # начало теста
     test_name = request.node.name
-    logging.info(f"🚀 Запуск теста \"{test_name}\"")
+    logging.info(f"🚀 Запуск теста '{test_name}'")
     start_time = datetime.now()
 
     yield
@@ -152,9 +141,9 @@ def auto_log_test(request: pytest.FixtureRequest):
     # результат теста
     outcome = test_results["outcome"]
     if outcome == "passed":
-        logging.info(f"✅ Тест \"{test_name}\" завершился успехом")
+        logging.info(f"✅ Тест '{test_name}' завершился успехом")
     elif outcome == "failed":
-        logging.error(f"❌ Тест \"{test_name}\" завершился неудачно")
+        logging.error(f"❌ Тест '{test_name}' завершился неудачно")
     else:
         logging.info(f"Результат теста: {outcome}")
 

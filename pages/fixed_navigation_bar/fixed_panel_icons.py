@@ -1,32 +1,36 @@
+import logging
+
 import allure
 from selenium.webdriver.common.by import By
 
-from utils.expectation import Expectation
-
-MENU_LOCATOR = (
-    By.XPATH,
-    "//button[contains(@class, 'btn-light') and .//span[contains(text(), 'menu')]]"
-)
-SHOP_LOCATOR = (By.CSS_SELECTOR, "a.navbar-brand")
-SHOPPING_CART_LOCATOR = (
-    By.XPATH,
-    "//button[contains(@class, 'btn-light') and .//span[contains(text(), 'shopping_cart')]]"
-)
+from utils.action_with_element import ActionWithElement
 
 
-class FixedPanelIcons(Expectation):
+class FixedPanelIcons(ActionWithElement):
+    MENU_LOCATOR = (
+        By.XPATH,
+        "//button[contains(@class, 'btn-light') and .//span[contains(text(), 'menu')]]"
+    )
+    SHOP_LOCATOR = (By.CSS_SELECTOR, "a.navbar-brand")
+    SHOPPING_CART_LOCATOR = (
+        By.XPATH,
+        "//button[contains(@class, 'btn-light') and .//span[contains(text(), 'shopping_cart')]]"
+    )
 
     @allure.step("Открыть меню")
     def open_menu(self):
-        self.visibility_of_element_located(MENU_LOCATOR, "Меню").click()
-        print("Нажата кнопка 'Меню'.")
+        menu_button = self.visibility_of_element_located(self.MENU_LOCATOR, "Меню")
+        self.click_button(menu_button)
+        logging.info("Нажатие кнопки 'Меню'.")
 
     @allure.step("Нажать на 'Магазин'")
     def click_shop(self):
-        self.visibility_of_element_located(SHOP_LOCATOR, "Магазин").click()
-        print("Нажатие на надпись 'Магазин'.")
+        shop_button = self.visibility_of_element_located(self.SHOP_LOCATOR, "Магазин")
+        self.click_button(shop_button)
+        logging.info("Нажатие на надпись 'Магазин'.")
 
     @allure.step("Нажать на корзину")
     def click_shopping_cart(self):
-        self.visibility_of_element_located(SHOPPING_CART_LOCATOR, "Корзина").click()
-        print("Переход в продуктовую корзинку.")
+        shopping_cart_button = self.visibility_of_element_located(self.SHOPPING_CART_LOCATOR, "Корзина")
+        self.click_button(shopping_cart_button)
+        logging.info("Переход в продуктовую корзинку.")
